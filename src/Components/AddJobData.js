@@ -75,7 +75,7 @@ export default function AddJobData(props) {
                   Rejected
                 </option>
                 <option key="hadAnInterview" value="hadAnInterview">
-                  Had an interview
+                  Had an interview (non HackerRank)
                 </option>
                 <option key="offer" value="offer">
                   Recieved an offer
@@ -112,7 +112,7 @@ export default function AddJobData(props) {
                   Over 250th
                 </option>
               </Select>
-              <FormHelperText>Approximate university rank</FormHelperText>
+              <FormHelperText>Approximate (non-major) university rank</FormHelperText>
             </FormControl>
             <FormControl required style={{ margin: "5px", minWidth: "100px" }}>
               <Select
@@ -235,8 +235,11 @@ export default function AddJobData(props) {
                 <option key="fortune500" value="fortune500">
                   Fortune 500
                 </option>
+                <option key="finTech" value="finTech">
+                  FinTech / Quant 
+                </option>
                 <option key="bigN" value="bigN">
-                  Big N / FAANG+
+                  Big N / FAANG
                 </option>
               </Select>
               <FormHelperText>Most Prestegious Internship Level</FormHelperText>

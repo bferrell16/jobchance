@@ -20,7 +20,7 @@ export default function NavBar() {
       <Box component="nav" elevation={0}>
         <AppBar position="static" color="primary" elevation={0}>
           <Toolbar>
-            <Typography variant="h5" style={{ flexGrow: 1 }}>
+            <Typography component={Link} to='/' variant="h5" style={{ flexGrow: 1, color: 'black', textDecoration: 'none' }}>
               JobChance
             </Typography>
             <IconButton

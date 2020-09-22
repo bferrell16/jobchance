@@ -58,8 +58,9 @@ class AddAJob extends React.Component {
       <option key="empty" value="" hidden disabled></option>
     );
     company_selections.sort(function(a, b) { 
-      return a.key.localeCompare(b.key)
+      return a.props.children.localeCompare(b.props.children)
     });
+    console.log(company_selections);
     return company_selections;
   }
 

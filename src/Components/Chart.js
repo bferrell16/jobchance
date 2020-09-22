@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import firestore from "./Firestore";
 import AddJobData from "./AddJobData";
 import { Typography } from "@material-ui/core";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import { Scatter } from "react-chartjs-2";
 
 class Chart extends React.Component {
@@ -62,6 +62,10 @@ class Chart extends React.Component {
         //add in experience
         y = y + 7;
       }
+      if (item.experience === "finTech") {
+        //add in experience
+        y = y + 5;
+      }
       if (item.experience === "fortune500") {
         y = y + 4;
       }
@@ -87,13 +91,41 @@ class Chart extends React.Component {
       y = y / 14; //y / max y value
 
       if (item.outcome === "rejected") {
-        rejected.push({ x: x, y: y });
+        rejected.push({
+          x: x,
+          y: y,
+          school: item.school,
+          experience: item.experience,
+          numExperience: item.numExperience,
+          classYear: item.classYear,
+        });
       } else if (item.outcome === "offer") {
-        offer.push({ x: x, y: y });
+        offer.push({
+          x: x,
+          y: y,
+          school: item.school,
+          experience: item.experience,
+          numExperience: item.numExperience,
+          classYear: item.classYear,
+        });
       } else if (item.outcome === "hadAnInterview") {
-        hadAnInterview.push({ x: x, y: y });
+        hadAnInterview.push({
+          x: x,
+          y: y,
+          school: item.school,
+          experience: item.experience,
+          numExperience: item.numExperience,
+          classYear: item.classYear,
+        });
       } else {
-        ghosted.push({ x: x, y: y });
+        ghosted.push({
+          x: x,
+          y: y,
+          school: item.school,
+          experience: item.experience,
+          numExperience: item.numExperience,
+          classYear: item.classYear,
+        });
       }
     });
     this.setState({
@@ -130,20 +162,25 @@ class Chart extends React.Component {
 
   render() {
     var yLabel = false;
+    var padding = 0;
     if (window.innerWidth > 500) {
+      padding = 40;
       yLabel = true;
     } else {
+      padding = 0;
       yLabel = false;
     }
     return (
-      <div style={{ padding: 0, textAlign: 'center' }}>
-        <Typography variant="h3" margin={5} align="center">
-          {this.state.company}
-        </Typography>
-        <Typography variant="h6" margin={5} align="center">
-          {this.state.jobTitle}
-        </Typography>
-        <a href={this.state.jobLink}>click me to apply </a>
+      <div style={{ padding: padding, textAlign: "center" }}>
+        <div style={{ marginBottom: 25 }}>
+          <Typography variant="h3" margin={5} align="center">
+            {this.state.company}
+          </Typography>
+          <Typography variant="h6" margin={5} align="center">
+            {this.state.jobTitle}
+          </Typography>
+          <a href={this.state.jobLink}>click me to apply </a>
+        </div>
         <Scatter
           data={this.state.chartData}
           options={{
@@ -176,6 +213,32 @@ class Chart extends React.Component {
                   },
                 },
               ],
+            },
+            tooltips: {
+              displayColors: false,
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  var dataset = data["datasets"][tooltipItem.datasetIndex];
+                  var multistringText = [
+                    "Class Year: " +
+                      dataset["data"][tooltipItem["index"]].classYear,
+                  ];
+                  multistringText.push(
+                    "School rank: " +
+                      [dataset["data"][tooltipItem["index"]].school]
+                  );
+                  multistringText.push(
+                    "Experience: " +
+                      [dataset["data"][tooltipItem["index"]].experience]
+                  );
+                  multistringText.push(
+                    "Number of experiences: " +
+                      [dataset["data"][tooltipItem["index"]].numExperience]
+                  );
+                  return multistringText;
+                },
+                beforeLabel: (item, data) => "",
+              },
             },
           }}
         />
