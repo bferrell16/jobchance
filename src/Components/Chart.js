@@ -40,7 +40,7 @@ class Chart extends React.Component {
           this.setState({
             jobKey: jobKey,
             jobData: data.data,
-            company: data.Company,
+            company: data.company,
             jobTitle: data.title,
             jobLink: data.link,
           });

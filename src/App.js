@@ -62,6 +62,9 @@ class App extends React.Component {
         Company
       </option>
     );
+    company_selections.sort(function(a, b) { 
+      return a.key.localeCompare(b.key)
+    });
     return company_selections;
   }
 
