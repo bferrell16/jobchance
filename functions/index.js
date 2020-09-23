@@ -11,6 +11,7 @@ const db = admin.firestore();
 // });
 
 exports.addCompany = functions.https.onCall(async (data, context) => {
+  console.log(data.companyName);
   db.collection("companies").add({
     Name: data.companyName,
     jobs: {},
@@ -18,6 +19,8 @@ exports.addCompany = functions.https.onCall(async (data, context) => {
 });
 
 exports.addJob = functions.https.onCall(async (data, context) => {
+  console.log(data.companyName);
+  console.log(data.jobTitle);
   const docRef = await db.collection("jobs").add({
     company: data.companyName,
     title: data.jobTitle,
@@ -32,6 +35,8 @@ exports.addJob = functions.https.onCall(async (data, context) => {
 });
 
 exports.addJobData = functions.https.onCall(async (data, context) => {
+  console.log(data.company);
+  console.log(data.jobTitle);
   db.collection("jobs")
     .doc(data.jobKey)
     .update({
@@ -43,6 +48,8 @@ exports.addJobData = functions.https.onCall(async (data, context) => {
           outcome: data.outcome,
           classYear: data.classYear,
           numExperience: data.numExperience,
+          underRepresentedGroup: data.underRepresentedGroup,
+          referral: data.referral,
         }
       )
     });

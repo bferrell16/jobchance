@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import firestore from "./Firestore";
 import AddJobData from "./AddJobData";
 import { Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import { Scatter } from "react-chartjs-2";
 
 class Chart extends React.Component {
@@ -58,6 +57,9 @@ class Chart extends React.Component {
     jobDataIn.forEach((item) => {
       var y = 0; //number of experiences not that valued, so took out parseInt(item.numExperience)
       const x = parseFloat(item.gpa);
+      //added these data points late
+      item.referral = item.referral == undefined ? "no" : "yes";
+      item.underRepresentedGroup = item.underRepresentedGroup == undefined ? "no" : "yes";
       if (item.experience === "bigN") {
         //add in experience
         y = y + 7;
@@ -74,21 +76,21 @@ class Chart extends React.Component {
       } //no experience doesnt add to y value
       if (item.school === "10") {
         //add in school rank
-        y = y + 7;
-      }
-      if (item.school === "25") {
         y = y + 5;
       }
-      if (item.school === "50") {
+      if (item.school === "25") {
         y = y + 3;
       }
-      if (item.school === "100") {
+      if (item.school === "50") {
         y = y + 2;
       }
+      if (item.school === "100") { //dont add anything for schools over 100th
+        y = y + 1;
+      }/*
       if (item.school === "250") {
         y = y + 1;
-      } //dont add anything for schools over 250th
-      y = y / 14; //y / max y value
+      }*/ //dont add anything for schools over 250th
+      y = y / 12; //y / max y value
 
       if (item.outcome === "rejected") {
         rejected.push({
@@ -98,6 +100,8 @@ class Chart extends React.Component {
           experience: item.experience,
           numExperience: item.numExperience,
           classYear: item.classYear,
+          underRepresentedGroup: item.underRepresentedGroup,
+          referral: item.referral,
         });
       } else if (item.outcome === "offer") {
         offer.push({
@@ -107,6 +111,8 @@ class Chart extends React.Component {
           experience: item.experience,
           numExperience: item.numExperience,
           classYear: item.classYear,
+          underRepresentedGroup: item.underRepresentedGroup,
+          referral: item.referral,
         });
       } else if (item.outcome === "hadAnInterview") {
         hadAnInterview.push({
@@ -116,6 +122,8 @@ class Chart extends React.Component {
           experience: item.experience,
           numExperience: item.numExperience,
           classYear: item.classYear,
+          underRepresentedGroup: item.underRepresentedGroup,
+          referral: item.referral,
         });
       } else {
         ghosted.push({
@@ -125,6 +133,8 @@ class Chart extends React.Component {
           experience: item.experience,
           numExperience: item.numExperience,
           classYear: item.classYear,
+          underRepresentedGroup: item.underRepresentedGroup,
+          referral: item.referral,
         });
       }
     });
@@ -235,6 +245,14 @@ class Chart extends React.Component {
                     "Number of experiences: " +
                       [dataset["data"][tooltipItem["index"]].numExperience]
                   );
+                  multistringText.push(
+                    "Underrepresented group: " +
+                      [dataset["data"][tooltipItem["index"]].underRepresentedGroup]
+                  );
+                  multistringText.push(
+                    "Had a referral: " +
+                      [dataset["data"][tooltipItem["index"]].referral]
+                  );
                   return multistringText;
                 },
                 beforeLabel: (item, data) => "",
@@ -242,7 +260,7 @@ class Chart extends React.Component {
             },
           }}
         />
-        <AddJobData jobKey={this.state.jobKey} />
+        <AddJobData jobKey={this.state.jobKey} company={this.state.company} jobTitle={this.state.jobTitle} />
       </div>
     );
   }

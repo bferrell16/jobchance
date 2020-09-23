@@ -25,6 +25,8 @@ export default function AddJobData(props) {
       data.school !== "empty" 
     ) {
       addJobData({
+        jobTitle: props.jobTitle,
+        company: props.company,
         jobKey: props.jobKey,
         gpa: data.gpa,
         school: data.school,
@@ -32,6 +34,8 @@ export default function AddJobData(props) {
         experience: data.experience,
         classYear: data.classYear,
         numExperience: data.numExperience,
+        underRepresentedGroup: data.underRepresentedGroup,
+        referral: data.referral,
       });
       reset(); //reset the form
     } else {
@@ -243,6 +247,42 @@ export default function AddJobData(props) {
                 </option>
               </Select>
               <FormHelperText>Most Prestegious Internship Level</FormHelperText>
+            </FormControl>
+            <FormControl required style={{ margin: "5px" }}>
+              <Select
+                native
+                defaultValue="no"
+                variant="outlined"
+                id="underRepresentedGroup"
+                name="underRepresentedGroup"
+                inputRef={register}
+              >
+                <option key="no" value="no">
+                  No
+                </option>
+                <option key="yes" value="yes">
+                  Minority/Woman in STEM
+                </option>
+              </Select>
+              <FormHelperText>Are you in an under represented group?</FormHelperText>
+            </FormControl>
+            <FormControl required style={{ margin: "5px" }}>
+              <Select
+                native
+                defaultValue="no"
+                variant="outlined"
+                id="referral"
+                name="referral"
+                inputRef={register}
+              >
+                <option key="no" value="no">
+                  No
+                </option>
+                <option key="yes" value="yes">
+                  Yes
+                </option>
+              </Select>
+              <FormHelperText>Did you have a referral?</FormHelperText>
             </FormControl>
             <FormControl style={{ margin: "5px" }}>
               <Select
